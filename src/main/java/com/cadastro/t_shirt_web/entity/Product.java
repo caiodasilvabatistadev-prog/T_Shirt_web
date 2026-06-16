@@ -1,24 +1,27 @@
-package T_shirt_Entity;
+package com.cadastro.t_shirt_web.entity;
+
 import jakarta.persistence.*;
 
+import java.math.BigDecimal;
 @Entity
-public class Tshirt_Product {
+@Table(name = "products")
+public class Product {
 @Id
 @GeneratedValue(strategy=GenerationType.IDENTITY)
 private Long id;
 
 private String name;
 private String description;
-private Double price;
+private BigDecimal price;
 private Integer stock;
-public Tshirt_Product(){
+public Product(){
 
 }
-    public Tshirt_Product(Long id,
-                          String name,
-                          String description,
-                          Double price,
-                          Integer stock) {
+    public Product(Long id,
+                   String name,
+                   String description,
+                   BigDecimal price,
+                   Integer stock) {
     this.id = id;
     this.name = name;
     this.description = description;
@@ -50,11 +53,11 @@ public Tshirt_Product(){
         this.description = description;
     }
 
-    public Double getPrice() {
+    public BigDecimal getPrice() {
         return price;
     }
 
-    public void setPrice(Double price) {
+    public void setPrice(BigDecimal price) {
         this.price = price;
     }
 
