@@ -8,6 +8,7 @@
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
         <version>3.3.2</version>
+        <relativePath/> <!-- lookup parent from repository -->
     </parent>
 
     <groupId>com.cadastro</groupId>
@@ -19,6 +20,11 @@
     </properties>
 
     <dependencies>
+        <!-- VALIDATION (Corrected artifact name and scope) -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-validation</artifactId>
+        </dependency>
 
         <!-- WEB -->
         <dependency>
@@ -45,8 +51,7 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
-
-    </dependencies>
+    </dependencies> <!-- Added missing closing tag here -->
 
     <build>
         <plugins>
