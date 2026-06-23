@@ -1,33 +1,35 @@
-HELP.md
+# ===== Java / Spring Boot =====
 target/
-.mvn/wrapper/maven-wrapper.jar
-!**/src/main/**/target/
-!**/src/test/**/target/
+*.jar
+*.war
+*.class
 
-### STS ###
-.apt_generated
-.classpath
-.factorypath
-.project
-.settings
-.springBeans
-.sts4-cache
-
-### IntelliJ IDEA ###
-.idea
-*.iws
+# ===== IntelliJ =====
+.idea/
 *.iml
-*.ipr
+out/
 
-### NetBeans ###
-/nbproject/private/
-/nbbuild/
-/dist/
-/nbdist/
-/.nb-gradle/
+# ===== Eclipse (caso abra em outra IDE) =====
+.project
+.classpath
+.settings/
+
+# ===== Maven =====
+log/
+*.log
+
+# ===== Gradle (se usar no futuro) =====
+.gradle/
 build/
-!**/src/main/**/build/
-!**/src/test/**/build/
 
-### VS Code ###
-.vscode/
+# ===== OS =====
+.DS_Store
+Thumbs.db
+
+# ===== Environment / Secrets =====
+.env
+application-local.properties
+
+# ===== Spring Boot cache =====
+*.h2.db
+*.mv.db
