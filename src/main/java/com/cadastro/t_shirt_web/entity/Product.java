@@ -10,35 +10,41 @@ import java.math.BigDecimal;
 @Table(name = "products")
 public class Product {
     @Id
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank(message ="Name cannot be empty")
+    @NotBlank(message = "Name cannot be empty")
     @Size(min = 3, max = 100)
     private String name;
 
-    @NotBlank(message= "Description cannot be empty")
-    @Size(min = 10,max = 255)
+    @NotBlank(message = "Description cannot be empty")
+    @Size(min = 10, max = 255)
     private String description;
 
-    @NotNull(message="Price is required")
-    @Positive(message="Price must be greater than zero")
+    @NotNull(message = "Price is required")
+    @Positive(message = "Price must be greater than zero")
     private BigDecimal price;
 
-    public Product(){
+    @NotNull(message = "Stock is required")
+    @Positive(message = "Stock must be greater tha zero")
+    private Integer stock;
 
-}
+    public Product() {
+
+    }
+
     public Product(
             Long id,
             String name,
             String description,
-            BigDecimal price
-    )
-    {
+            BigDecimal price,
+            Integer stock
+    ) {
         this.id = id;
         this.name = name;
         this.description = description;
-        this.price= price;
+        this.price = price;
+        this.stock = stock;
 
     }
 
@@ -73,5 +79,12 @@ public class Product {
     public void setPrice(BigDecimal price) {
         this.price = price;
     }
-}
 
+    public Integer getStock() {
+        return stock;
+    }
+
+    public void setStock(Integer stock) {
+        this.stock = stock;
+    }
+}
