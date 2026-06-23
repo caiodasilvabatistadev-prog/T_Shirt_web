@@ -1,7 +1,11 @@
 package com.cadastro.t_shirt_web.controller;
 
+import com.cadastro.t_shirt_web.dto.ProductRequestDTO;
 import com.cadastro.t_shirt_web.entity.Product;
 import com.cadastro.t_shirt_web.service.ProductService;
+
+import jakarta.validation.Valid;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,37 +23,55 @@ public class ProductController {
 
     // CREATE PRODUCT
     @PostMapping
-    public ResponseEntity<Product> create(@RequestBody Product product) {
-        Product createdProduct = productService.create(product);
-        return ResponseEntity.ok(createdProduct); // 200 OK
+    public ResponseEntity<Product> create(
+            @Valid @RequestBody ProductRequestDTO dto
+    ) {
+
+        Product product = productService.create(dto);
+
+        return ResponseEntity.ok(product);
     }
 
     // GET ALL PRODUCTS
     @GetMapping
     public ResponseEntity<List<Product>> getAll() {
+
         List<Product> products = productService.getAll();
-        return ResponseEntity.ok(products); // 200 OK
+
+        return ResponseEntity.ok(products);
     }
 
     // GET BY ID
     @GetMapping("/{id}")
-    public ResponseEntity<Product> getById(@PathVariable Long id) {
+    public ResponseEntity<Product> getById(
+            @PathVariable Long id
+    ) {
+
         Product product = productService.getById(id);
-        return ResponseEntity.ok(product); // 200 OK
+
+        return ResponseEntity.ok(product);
     }
 
     // UPDATE PRODUCT
     @PutMapping("/{id}")
-    public ResponseEntity<Product> update(@PathVariable Long id,
-                                          @RequestBody Product product) {
-        Product updated = productService.update(id, product);
-        return ResponseEntity.ok(updated); // 200 OK
+    public ResponseEntity<Product> update(
+            @PathVariable Long id,
+            @Valid @RequestBody ProductRequestDTO dto
+    ) {
+
+        Product updatedProduct = productService.update(id, dto);
+
+        return ResponseEntity.ok(updatedProduct);
     }
 
     // DELETE PRODUCT
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable Long id) {
+    public ResponseEntity<Void> delete(
+            @PathVariable Long id
+    ) {
+
         productService.delete(id);
-        return ResponseEntity.noContent().build(); // 204 OK
+
+        return ResponseEntity.noContent().build();
     }
 }

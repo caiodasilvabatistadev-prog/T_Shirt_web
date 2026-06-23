@@ -1,49 +1,67 @@
 package com.cadastro.t_shirt_web.service;
 
-import com.cadastro.t_shirt_web.repository.ProductRepository;
-import org.springframework.stereotype.Service;
+import com.cadastro.t_shirt_web.dto.ProductRequestDTO;
 import com.cadastro.t_shirt_web.entity.Product;
+import com.cadastro.t_shirt_web.repository.ProductRepository;
+
+import org.springframework.stereotype.Service;
+
 import java.util.List;
 
 @Service
 public class ProductService {
 
-    private final ProductRepository repository;
+    private final ProductRepository productRepository;
 
-    public ProductService(ProductRepository repository) {
-        this.repository = repository;
+    public ProductService(ProductRepository productRepository) {
+        this.productRepository = productRepository;
     }
 
     // CREATE
-    public Product create(Product product) {
-        return repository.save(product);
+    public Product create(ProductRequestDTO dto) {
+
+        Product product = new Product();
+
+        product.setName(dto.name());
+        product.setDescription(dto.description());
+        product.setPrice(dto.price());
+        product.setStock(dto.stock());
+
+        return productRepository.save(product);
     }
 
     // READ ALL
     public List<Product> getAll() {
-        return repository.findAll();
+        return productRepository.findAll();
     }
 
     // READ BY ID
     public Product getById(Long id) {
-        return repository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Product not found"));
+
+        return productRepository.findById(id)
+                .orElseThrow(() ->
+                        new IllegalArgumentException(
+                                "Product with id " + id + " not found"
+                        )
+                );
     }
 
     // UPDATE
-    public Product update(Long id, Product product) {
+    public Product update(Long id, ProductRequestDTO dto) {
 
         Product existing = getById(id);
 
-        existing.setName(product.getName());
-        existing.setPrice(product.getPrice());
-        existing.setDescription(product.getDescription());
+        existing.setName(dto.name());
+        existing.setDescription(dto.description());
+        existing.setPrice(dto.price());
+        existing.setStock(dto.stock());
 
-        return repository.save(existing);
+        return productRepository.save(existing);
     }
 
     // DELETE
     public void delete(Long id) {
-        repository.deleteById(id);
+
+        productRepository.deleteById(id);
     }
 }
