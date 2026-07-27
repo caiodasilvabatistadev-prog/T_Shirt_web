@@ -20,4 +20,5 @@ public record ProductRequestDTO(
         @PositiveOrZero(message = "Stock cannot be negative")
         Integer stock
 
-) {}
+) {
+}
