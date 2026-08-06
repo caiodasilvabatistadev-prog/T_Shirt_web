@@ -16,37 +16,50 @@ public class ProductService {
     private final ProductRepository productRepository;
     private final ProductMapper productMapper;
 
+
     public ProductService(ProductRepository productRepository,
                           ProductMapper productMapper) {
+
         this.productRepository = productRepository;
         this.productMapper = productMapper;
     }
 
+
     // CREATE
     public ProductResponseDTO create(ProductRequestDTO dto) {
+
         Product product = productMapper.toEntity(dto);
+
         Product saved = productRepository.save(product);
 
         return productMapper.toResponse(saved);
     }
 
-    // READ ALL
-    public List<ProductResponseDTO> getAll() {
+
+    // FIND ALL
+    public List<ProductResponseDTO> findAll() {
+
         return productRepository.findAll()
                 .stream()
                 .map(productMapper::toResponse)
                 .toList();
     }
 
-    // READ BY ID
-    public ProductResponseDTO getById(Long id) {
+
+
+    // FIND BY ID
+    public ProductResponseDTO findById(Long id) {
+
         Product product = findProductById(id);
 
         return productMapper.toResponse(product);
     }
 
+
     // UPDATE
-    public ProductResponseDTO update(Long id, ProductRequestDTO dto) {
+    public ProductResponseDTO update(Long id,
+                                     ProductRequestDTO dto) {
+
         Product product = findProductById(id);
 
         productMapper.updateEntity(product, dto);
@@ -56,14 +69,20 @@ public class ProductService {
         return productMapper.toResponse(updated);
     }
 
+
     // DELETE
     public void delete(Long id) {
+
         Product product = findProductById(id);
+
         productRepository.delete(product);
     }
 
+
     private Product findProductById(Long id) {
+
         return productRepository.findById(id)
-                .orElseThrow(() -> new ProductNotFoundException(id));
+                .orElseThrow(() ->
+                        new ProductNotFoundException(id));
     }
 }

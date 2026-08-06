@@ -1,14 +1,15 @@
 package com.cadastro.t_shirt_web.controller;
-
 import com.cadastro.t_shirt_web.dto.ProductRequestDTO;
 import com.cadastro.t_shirt_web.dto.ProductResponseDTO;
 import com.cadastro.t_shirt_web.service.ProductService;
 
 import jakarta.validation.Valid;
 
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 
 import java.util.List;
 
@@ -38,12 +39,12 @@ public class ProductController {
                 .body(product);
     }
 
+
     // GET ALL PRODUCTS
     @GetMapping
     public ResponseEntity<List<ProductResponseDTO>> getAll() {
 
-        List<ProductResponseDTO> products =
-                productService.getAll();
+        List<ProductResponseDTO> products = productService.findAll();
 
         return ResponseEntity.ok(products);
     }
@@ -55,7 +56,7 @@ public class ProductController {
     ) {
 
         ProductResponseDTO product =
-                productService.getById(id);
+                productService.findById(id);
 
         return ResponseEntity.ok(product);
     }
