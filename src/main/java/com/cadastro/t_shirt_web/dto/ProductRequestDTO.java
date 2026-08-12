@@ -3,8 +3,6 @@ package com.cadastro.t_shirt_web.dto;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.PositiveOrZero;
-import com.cadastro.t_shirt_web.dto.ProductRequestDTO;
-import com.cadastro.t_shirt_web.dto.ProductResponseDTO;
 import java.math.BigDecimal;
 
 public record ProductRequestDTO(

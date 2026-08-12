@@ -34,8 +34,7 @@ public class ProductController {
         ProductResponseDTO product =
                 productService.create(dto);
 
-        return ResponseEntity
-                .status(HttpStatus.CREATED)
+        return ResponseEntity.status(HttpStatus.CREATED)
                 .body(product);
     }
 
