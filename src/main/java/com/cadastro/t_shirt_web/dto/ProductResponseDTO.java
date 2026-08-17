@@ -7,6 +7,7 @@ public record ProductResponseDTO(
         String name,
         String description,
         BigDecimal price,
-        Integer stock
+        Integer stock,
+        Long categoryId
 ) {
 }

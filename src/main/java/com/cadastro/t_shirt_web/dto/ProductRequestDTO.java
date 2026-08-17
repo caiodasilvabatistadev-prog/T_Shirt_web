@@ -2,6 +2,7 @@ package com.cadastro.t_shirt_web.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.PositiveOrZero;
 import java.math.BigDecimal;
@@ -37,8 +38,12 @@ public record ProductRequestDTO(
                 minimum = "0"
         )
         @PositiveOrZero(message = "Stock cannot be negative")
-        Integer stock
-
-
+        Integer stock,
+        @Schema(
+                description = "ID of the product category",
+                example = "1"
+)
+        @NotNull(message = "Category is required")
+        Long categoryId
 ) {
 }
