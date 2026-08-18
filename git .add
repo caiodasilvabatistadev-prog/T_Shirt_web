@@ -1,0 +1,110 @@
+[1mdiff --git a/src/main/java/com/cadastro/t_shirt_web/controller/ProductController.java b/src/main/java/com/cadastro/t_shirt_web/controller/ProductController.java[m
+[1mindex 35ade92..174c3ff 100644[m
+[1m--- a/src/main/java/com/cadastro/t_shirt_web/controller/ProductController.java[m
+[1m+++ b/src/main/java/com/cadastro/t_shirt_web/controller/ProductController.java[m
+[36m@@ -15,12 +15,12 @@[m [mimport io.swagger.v3.oas.annotations.tags.Tag;[m
+ [m
+ import jakarta.validation.Valid;[m
+ [m
+[32m+[m[32mimport org.springframework.data.domain.Page;[m
+[32m+[m[32mimport org.springframework.data.domain.Pageable;[m
+ import org.springframework.http.HttpStatus;[m
+ import org.springframework.http.ResponseEntity;[m
+ import org.springframework.web.bind.annotation.*;[m
+ [m
+[31m-import java.util.List;[m
+[31m-[m
+ @Tag([m
+         name = "Products",[m
+         description = "Operations related to product management"[m
+[36m@@ -67,19 +67,22 @@[m [mpublic class ProductController {[m
+                 .body(product);[m
+     }[m
+ [m
+[31m-    // GET ALL PRODUCTS[m
+[32m+[m[32m    // GET ALL PRODUCTS - PAGINATED[m
+     @Operation([m
+[31m-            summary = "List all products",[m
+[31m-            description = "Returns all products available in the catalog."[m
+[32m+[m[32m            summary = "List products with pagination",[m
+[32m+[m[32m            description = "Returns products using pagination parameters."[m
+     )[m
+     @ApiResponse([m
+             responseCode = "200",[m
+             description = "Products retrieved successfully"[m
+     )[m
+     @GetMapping[m
+[31m-    public ResponseEntity<List<ProductResponseDTO>> getAll() {[m
+[32m+[m[32m    public ResponseEntity<Page<ProductResponseDTO>> getAll([m
+[32m+[m[32m            Pageable pageable[m
+[32m+[m[32m    ) {[m
+ [m
+[31m-        List<ProductResponseDTO> products = productService.findAll();[m
+[32m+[m[32m        Page<ProductResponseDTO> products =[m
+[32m+[m[32m                productService.findAll(pageable);[m
+ [m
+         return ResponseEntity.ok(products);[m
+     }[m
+[1mdiff --git a/src/main/java/com/cadastro/t_shirt_web/service/ProductService.java b/src/main/java/com/cadastro/t_shirt_web/service/ProductService.java[m
+[1mindex 91c26c1..04a01c3 100644[m
+[1m--- a/src/main/java/com/cadastro/t_shirt_web/service/ProductService.java[m
+[1m+++ b/src/main/java/com/cadastro/t_shirt_web/service/ProductService.java[m
+[36m@@ -8,9 +8,10 @@[m [mimport com.cadastro.t_shirt_web.exception.ProductNotFoundException;[m
+ import com.cadastro.t_shirt_web.repository.CategoryRepository;[m
+ import com.cadastro.t_shirt_web.repository.ProductRepository;[m
+ import com.cadastro.t_shirt_web.security.mapper.ProductMapper;[m
+[31m-import org.springframework.stereotype.Service;[m
+ [m
+[31m-import java.util.List;[m
+[32m+[m[32mimport org.springframework.data.domain.Page;[m
+[32m+[m[32mimport org.springframework.data.domain.Pageable;[m
+[32m+[m[32mimport org.springframework.stereotype.Service;[m
+ [m
+ @Service[m
+ public class ProductService {[m
+[36m@@ -19,9 +20,11 @@[m [mpublic class ProductService {[m
+     private final ProductMapper productMapper;[m
+     private final CategoryRepository categoryRepository;[m
+ [m
+[31m-    public ProductService(ProductRepository productRepository,[m
+[31m-                          ProductMapper productMapper,[m
+[31m-                          CategoryRepository categoryRepository) {[m
+[32m+[m[32m    public ProductService([m
+[32m+[m[32m            ProductRepository productRepository,[m
+[32m+[m[32m            ProductMapper productMapper,[m
+[32m+[m[32m            CategoryRepository categoryRepository[m
+[32m+[m[32m    ) {[m
+ [m
+         this.productRepository = productRepository;[m
+         this.productMapper = productMapper;[m
+[36m@@ -40,13 +43,11 @@[m [mpublic class ProductService {[m
+         return productMapper.toResponse(saved);[m
+     }[m
+ [m
+[31m-    // FIND ALL[m
+[31m-    public List<ProductResponseDTO> findAll() {[m
+[32m+[m[32m    // FIND ALL - PAGINATED[m
+[32m+[m[32m    public Page<ProductResponseDTO> findAll(Pageable pageable) {[m
+ [m
+[31m-        return productRepository.findAll()[m
+[31m-                .stream()[m
+[31m-                .map(productMapper::toResponse)[m
+[31m-                .toList();[m
+[32m+[m[32m        return productRepository.findAll(pageable)[m
+[32m+[m[32m                .map(productMapper::toResponse);[m
+     }[m
+ [m
+     // FIND BY ID[m
+[36m@@ -58,8 +59,10 @@[m [mpublic class ProductService {[m
+     }[m
+ [m
+     // UPDATE[m
+[31m-    public ProductResponseDTO update(Long id,[m
+[31m-                                     ProductRequestDTO dto) {[m
+[32m+[m[32m    public ProductResponseDTO update([m
+[32m+[m[32m            Long id,[m
+[32m+[m[32m            ProductRequestDTO dto[m
+[32m+[m[32m    ) {[m
+ [m
+         Product product = findProductById(id);[m
+ [m

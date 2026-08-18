@@ -8,9 +8,10 @@ import com.cadastro.t_shirt_web.exception.ProductNotFoundException;
 import com.cadastro.t_shirt_web.repository.CategoryRepository;
 import com.cadastro.t_shirt_web.repository.ProductRepository;
 import com.cadastro.t_shirt_web.security.mapper.ProductMapper;
-import org.springframework.stereotype.Service;
 
-import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
 
 @Service
 public class ProductService {
@@ -19,9 +20,11 @@ public class ProductService {
     private final ProductMapper productMapper;
     private final CategoryRepository categoryRepository;
 
-    public ProductService(ProductRepository productRepository,
-                          ProductMapper productMapper,
-                          CategoryRepository categoryRepository) {
+    public ProductService(
+            ProductRepository productRepository,
+            ProductMapper productMapper,
+            CategoryRepository categoryRepository
+    ) {
 
         this.productRepository = productRepository;
         this.productMapper = productMapper;
@@ -40,13 +43,11 @@ public class ProductService {
         return productMapper.toResponse(saved);
     }
 
-    // FIND ALL
-    public List<ProductResponseDTO> findAll() {
+    // FIND ALL - PAGINATED
+    public Page<ProductResponseDTO> findAll(Pageable pageable) {
 
-        return productRepository.findAll()
-                .stream()
-                .map(productMapper::toResponse)
-                .toList();
+        return productRepository.findAll(pageable)
+                .map(productMapper::toResponse);
     }
 
     // FIND BY ID
@@ -58,8 +59,10 @@ public class ProductService {
     }
 
     // UPDATE
-    public ProductResponseDTO update(Long id,
-                                     ProductRequestDTO dto) {
+    public ProductResponseDTO update(
+            Long id,
+            ProductRequestDTO dto
+    ) {
 
         Product product = findProductById(id);
 

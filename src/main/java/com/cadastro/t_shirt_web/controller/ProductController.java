@@ -15,11 +15,11 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 
 import jakarta.validation.Valid;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @Tag(
         name = "Products",
@@ -67,19 +67,22 @@ public class ProductController {
                 .body(product);
     }
 
-    // GET ALL PRODUCTS
+    // GET ALL PRODUCTS - PAGINATED
     @Operation(
-            summary = "List all products",
-            description = "Returns all products available in the catalog."
+            summary = "List products with pagination",
+            description = "Returns products using pagination parameters."
     )
     @ApiResponse(
             responseCode = "200",
             description = "Products retrieved successfully"
     )
     @GetMapping
-    public ResponseEntity<List<ProductResponseDTO>> getAll() {
+    public ResponseEntity<Page<ProductResponseDTO>> getAll(
+            Pageable pageable
+    ) {
 
-        List<ProductResponseDTO> products = productService.findAll();
+        Page<ProductResponseDTO> products =
+                productService.findAll(pageable);
 
         return ResponseEntity.ok(products);
     }
