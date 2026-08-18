@@ -25,7 +25,6 @@ public class ProductService {
             ProductMapper productMapper,
             CategoryRepository categoryRepository
     ) {
-
         this.productRepository = productRepository;
         this.productMapper = productMapper;
         this.categoryRepository = categoryRepository;
@@ -43,10 +42,15 @@ public class ProductService {
         return productMapper.toResponse(saved);
     }
 
-    // FIND ALL - PAGINATED
-    public Page<ProductResponseDTO> findAll(Pageable pageable) {
+    // FIND ALL / SEARCH / FILTER / PAGINATION
+    public Page<ProductResponseDTO> findAll(
+            String name,
+            Long categoryId,
+            Pageable pageable
+    ) {
 
-        return productRepository.findAll(pageable)
+        return productRepository
+                .searchProducts(name, categoryId, pageable)
                 .map(productMapper::toResponse);
     }
 
@@ -83,6 +87,7 @@ public class ProductService {
         productRepository.delete(product);
     }
 
+    // FIND PRODUCT BY ID
     private Product findProductById(Long id) {
 
         return productRepository.findById(id)
@@ -90,10 +95,13 @@ public class ProductService {
                         new ProductNotFoundException(id));
     }
 
+    // FIND CATEGORY BY ID
     private Category findCategoryById(Long id) {
 
         return categoryRepository.findById(id)
                 .orElseThrow(() ->
-                        new RuntimeException("Category not found: " + id));
+                        new RuntimeException(
+                                "Category not found: " + id
+                        ));
     }
 }
